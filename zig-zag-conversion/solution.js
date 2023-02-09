@@ -8,34 +8,35 @@ var convert = function(s, numRows) {
     let i = 0;
     let loopback = false
     while (i < s.length) {
-        if (loopback) {
-            let j = numRows - 2;
-            while (j > 0) {
-                for (let k = 0; k < numRows; k++) {
-                    if (k === j) {
-                        results[k].push(s[i])
-                        i++
-                    } else {
-                        results[k].push('')
-                    }
-                }
-                j--
-            }
-            loopback = false
-        }
         for (let j = 0; j < numRows; j++) {
-            if (results[j]) {
-                results[j].push(s[i])
+            if (loopback) {
+                let j = numRows - 2;
+                while (j > 0) {
+                    for (let k = 0; k < numRows; k++) {
+                        if (k === j && s[i]) {
+                            results[k] += s[i]
+                            i++
+                        }
+                    }
+                    j--
+                }
+                loopback = false
+            }
+            if (results[j] && s[i]) {
+                results[j] += s[i]
             } else {
                 results.push([s[i]])
             }
             i++
+            if (i === s.length) {
+                break
+            }
         }
         loopback = true
     }
     let res = ''
     for (let i = 0; i < results.length; i++) {
-        res += results[i].join('')
+        res += results[i]
     }
 
     return res
